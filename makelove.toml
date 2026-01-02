@@ -1,0 +1,14 @@
+name = "Survival"
+build_directory = "export"
+love_version = "11.5"
+
+love_files = [
+    "+*",
+    "-*/.*",
+    "-./makelove-build/*",
+]
+
+default_targets = ["win32", "win64", "lovejs", "macos"]
+
+[lovejs]
+title = "game"
