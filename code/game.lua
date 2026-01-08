@@ -55,7 +55,10 @@ function game:load()
         300,
         200,
         love.graphics.newImage("assets/tileset.png"),
+        love.graphics.newImage("assets/items.png"),
         10,
+        5,
+        5,
         5,
         player.x, 
         player.y
@@ -77,7 +80,7 @@ function game:update(dt)
             player.hover.offX = 1
             player.hover.offY = 0
             player.direction = 1
-            if Map:getEntity(player.sx + 1, player.sy) == 0 then
+            if Map:getEntity(player.sx + 1, player.sy) == 0 or Map:getEntity(player.sx + 1, player.sy) > 50 then
                 player.x = player.x + 1
                 Map:setOffset(player.x, player.y) 
             end
@@ -86,7 +89,7 @@ function game:update(dt)
             player.hover.offX = -1
             player.hover.offY = 0
             player.direction = -1
-            if Map:getEntity(player.sx - 1, player.sy) == 0 then
+            if Map:getEntity(player.sx - 1, player.sy) == 0 or Map:getEntity(player.sx - 1, player.sy) > 50 then
                 player.x = player.x - 1
                 Map:setOffset(player.x, player.y) 
             end
@@ -94,7 +97,7 @@ function game:update(dt)
         if (love.keyboard.isDown("down") or love.keyboard.isDown("s")) then 
             player.hover.offY = 1
             player.hover.offX = 0
-            if Map:getEntity(player.sx, player.sy + 1) == 0 then
+            if Map:getEntity(player.sx, player.sy + 1) == 0 or Map:getEntity(player.sx, player.sy + 1) > 50 then
                 player.y = player.y + 1
                 Map:setOffset(player.x, player.y) 
             end
@@ -102,7 +105,7 @@ function game:update(dt)
         if (love.keyboard.isDown("up") or love.keyboard.isDown("w")) then 
             player.hover.offY = -1
             player.hover.offX = 0
-            if Map:getEntity(player.sx, player.sy - 1) == 0 then
+            if Map:getEntity(player.sx, player.sy - 1) == 0 or Map:getEntity(player.sx, player.sy - 1) > 50 then
                 player.y = player.y - 1
                 Map:setOffset(player.x, player.y) 
             end
@@ -110,7 +113,14 @@ function game:update(dt)
         if love.keyboard.isDown("z") and mine == false then
             player.hover.inside = Map:getEntity(player.sx + player.hover.offX, player.sy + player.hover.offY)
             if player.hover.inside > 0 and player.hover.inside < 50 then 
+                d = player.hover.inside
                 Map:setEntity(player.sx + player.hover.offX, player.sy + player.hover.offY, 0)
+                if d == 14 then
+                    Map:setItem(player.sx + player.hover.offX, player.sy + player.hover.offY, 1)
+                end
+                if d == 24 then 
+                    Map:setItem(player.sx + player.hover.offX, player.sy + player.hover.offY, 2)
+                end
             end
             atime = 0
             mine = true
@@ -142,6 +152,10 @@ function game:update(dt)
 
     if love.keyboard.isDown("escape") then
         love.event.quit()
+    end
+
+    if Map:getEntity(player.sx, player.sy) > 50 then 
+        Map:setEntity(player.sx , player.sy, 0)
     end
 
     Scale:update()

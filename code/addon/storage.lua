@@ -32,7 +32,7 @@ function storage:newItem(slot, itemID, Quantity)
     }
 end
 
-function storage:add(slot, Quantity)
+function storage:add(itemID, Quantity)
     i = slot
     if self.items[i].quantity < self.maxCount then
         self.items[i].quantity = self.items[i].quantity + Quantity
@@ -58,8 +58,12 @@ function storage:draw(direction, rotate)
     for d = 1, self.slots do
         j = self.items[d].item
         k = self.items[d].quantity
+        if d == u then
+            love.graphics.rectangle("fill", 60 + ((d - 1) * 72), self.screenData[2] - 78, 72, 72)
+        end
         love.graphics.draw(self.ui, 60 + ((d - 1) * 72), self.screenData[2] - 78, 0, 3, 3)
         if j then
+            
             love.graphics.draw(self.itemsImage, self.itemQuads[j], 76 + ((d - 1) * 72), self.screenData[2] - 62, 0, 2.5, 2.5)
             love.graphics.setColor(0,0,0,1)
             if k < 10 then
@@ -68,6 +72,7 @@ function storage:draw(direction, rotate)
                 love.graphics.print(tostring(k), 100 + ((d - 1) * 72), self.screenData[2] - 40)
             end
             love.graphics.setColor(1,1,1,1)
+            
         end
     end
 end
