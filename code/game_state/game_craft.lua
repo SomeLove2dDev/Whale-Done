@@ -1,7 +1,8 @@
 game_craft = {}
 game_craft.__index = game_craft
 
-state2 = "craft"
+local scale = require("code.addon.scale")
+local Scale1 = scale:new(768, 432)
 
 function game_craft:new()
     local obj = {}
@@ -10,16 +11,22 @@ function game_craft:new()
 end
 
 function game_craft:load()
-    
+
 end
 
 function game_craft:update(dt)
-    state2 = "craft"
-    return state2
+    if love.keyboard.isDown("x") then
+        return "game"
+    end
+    
+    Scale1:update()
+
+    return "craft"
 end
 
 function game_craft:draw()
-
+    Scale1:draw1()
+    Scale1:draw2()
 end
 
 return game_craft

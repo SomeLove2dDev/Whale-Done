@@ -7,6 +7,7 @@ function scale:new(sx, sy)
     self.sy = sy
     self.scaleY = 1
     self.offX = 0
+    self.csy = 1
     self.currentWidth = self.sx
     self.currentHeight = self.sy
     self.flags = {}
@@ -27,6 +28,7 @@ function scale:draw1()
     self.offX = (self.currentWidth - (self.sx * self.scaleY)) / 2
     love.graphics.translate(self.offX, 0)
     self.scaleY = self.currentHeight / self.sy
+    self.csy = self.scaleY
     
     love.graphics.scale(self.scaleY, self.scaleY)
 end
@@ -38,6 +40,10 @@ function scale:draw2()
     love.graphics.rectangle("fill", self.currentWidth - self.offX, 0, self.offX, self.currentHeight)
 
     love.graphics.pop()
+end
+
+function scale:getScale()
+    return self.csy
 end
 
 return scale

@@ -6,6 +6,8 @@ game_craft = require("code.game_state.game_craft")
 play = game_game:new()
 craft = game_craft:new()
 state = "game"
+switch = true
+time = 0
 
 function game:new()
     local obj = {}
@@ -19,25 +21,37 @@ function game:load()
 end
 
 function game:update(dt)
-    if state == "game" then 
+    time = time + 1
+    cooldown = 10
+    if state == "game" and switch then 
         state = play:update(dt)
-        Scale:update()
-    elseif state == "craft" then
+        if state == "craft" then
+            switch = false
+            time = 0
+        end
+    elseif state == "craft" and switch then
         state = craft:update(dt)
-        Scale:update()
+        if state == "game" then
+            switch = false
+            time = 0
+        end
     end
+
+    if time > cooldown and not switch then
+        switch = true
+    end 
 end
 
 function game:draw()
     if state == "game" then 
-        Scale:draw1()
         play:draw()
-        Scale:draw2()
     elseif state == "craft" then
-        Scale:draw1()
         craft:draw()
-        Scale:draw2()
     end
+end
+
+function game:getScale() 
+    Scale:getScale()
 end
 
 return game

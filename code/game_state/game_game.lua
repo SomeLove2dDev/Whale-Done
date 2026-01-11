@@ -14,7 +14,6 @@ scaleY = 1
 mine = false
 atime = 0
 moved = false
-state1 = "game"
 Scale = scale:new(screenWidth, screenHeight)
 mapdata = require("code.map.Survival")
 
@@ -134,7 +133,7 @@ function game_game:update(dt)
         end
 
         if love.keyboard.isDown("x") then 
-            state1 = "craft"
+            return "craft"
         end
 
         if love.keyboard.isDown("1") then Inventory:hold(1) end
@@ -179,11 +178,13 @@ function game_game:update(dt)
         Map:setEntity(player.sx , player.sy, 0)
     end
 
-    state1 = "game"
-    return state1
+    Scale:update()
+
+    return "game"
 end
 
 function game_game:draw()
+    Scale:draw1()
     love.graphics.setColor(46*rgb, 138*rgb, 230*rgb, 1)
     love.graphics.rectangle("fill", 0, 0, screenWidth, screenHeight)
     love.graphics.setColor(1, 1, 1, 1)
@@ -191,6 +192,7 @@ function game_game:draw()
     love.graphics.draw(player.hover.image, screenWidth / 2 - 24 + (player.hover.offX * 48), screenHeight / 2 + (player.hover.offY * 48), 0, player.scale, player.scale)
     love.graphics.draw(player.image, screenWidth / 2, screenHeight / 2 + 24, 0, player.scale * player.direction, player.scale, 8, 8)
     Inventory:draw(player.direction, player.rotate)
+    Scale:draw2()
 end
 
 return game_game
