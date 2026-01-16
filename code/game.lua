@@ -5,7 +5,7 @@ game_game = require("code.game_state.game_game")
 game_craft = require("code.game_state.game_craft")
 play = game_game:new()
 craft = game_craft:new()
-state = "craft"
+state = "game"
 switch = true
 time = 0
 
