@@ -113,9 +113,9 @@ function game_game:update(dt, save, past)
     saved = true
     player.sx = player.x + 9
     player.sy = player.y + 6
-    mtime = mtime + 1
-    atime = atime + 1
-    cooldown = 6
+    mtime = mtime + dt
+    atime = atime + dt
+    cooldown = 0.1
 
     -- check keys
     if mtime > cooldown then
@@ -175,7 +175,9 @@ function game_game:update(dt, save, past)
                     end
                 end
                 atime = 0
-                mine = true
+                if not mine then
+                    mine = true
+                end
                 moved = true
             end
             --place
@@ -207,14 +209,21 @@ function game_game:update(dt, save, past)
 
     -- mining animation
     if mine == true then
-        if atime <= 10 then
+        if atime <= 0.15 then
             player.rotate = player.rotate + 5
         end
-        if atime > 10 and atime < 22 then
+        if atime > 0.2 and atime < 0.365 then
             player.rotate = player.rotate - 5
         end
-        if atime == 22 then
+        if atime >= 0.415 then
             atime = 0
+            while player.rotate ~= 0 do
+                if player.rotate > 0 then
+                    player.rotate = player.rotate - 5
+                elseif player.rotate < 0 then
+                    player.rotate = player.rotate + 5
+                end
+            end
             mine = false
         end
     end
