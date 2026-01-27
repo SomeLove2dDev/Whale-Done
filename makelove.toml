@@ -1,7 +1,7 @@
 name = "Survival"
 build_directory = "exports"
 love_version = "11.5"
-icon_file = "player.png"
+icon_file = "assets/player.png"
 
 love_files = [
     "+*",
