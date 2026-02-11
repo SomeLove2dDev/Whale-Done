@@ -14,22 +14,30 @@ Buttons = {}
 hold = false
 held = true
 bReturn = {{false, 0}, {false, 0}}
+have = {}
+q1 = false
+q2 = false
+q3 = false
+q4 = false
 bQty = {
+    0,
     0,
     0
 }
 text = {
     "bridge",
     "workbench",
+    "wood",
 }
 recipe = {
-    "3 wood",
-    "5 wood + 4 stone"
+    "x3",
+    "x5   + x4",
+    "x4"
 }
 rgb = 1/255
-bqt = 2
+bqt = 3
 for i=1, bqt do
-    table.insert(Buttons, button:new(150, 150 + (i-1) * 60, 500, 50, text[i], -150, 0, {87 * rgb, 114 * rgb, 119 * rgb, 1}))
+    table.insert(Buttons, button:new(150, 100 + (i-1) * 60, 500, 50, text[i], -150, 0, {87 * rgb, 114 * rgb, 119 * rgb, 1}))
 end
 
 -- create game craft
@@ -53,11 +61,13 @@ function game_craft:load()
     logo = {
         blocks[4],
         blocks[5],
+        blocks[1]
     }
 end
 
 -- update function for game craft
-function game_craft:update(dt)
+function game_craft:update(dt, save)
+    have = save
     d = 0
     if love.mouse.isDown(1) then
         hold = true
@@ -93,6 +103,24 @@ end
 
 -- draw function for game craft
 function game_craft:draw()
+    for _, item in ipairs(have) do
+        if item.item == 1 then
+            if item.quantity >= 3 and item.quantity then 
+                q1 = true
+                if item.quantity >= 5 then q2 = true end
+            else
+                q1 = false
+                q2 = false
+            end
+        elseif item.item == 2 and item.quantity then
+            if item.quantity >= 4 then q3 = true 
+            else q3 = false end
+        elseif item.item == 7 and item.quantity then
+            if item.quantity >= 4 then q4 = true 
+            else q4 = false end
+        end
+    end
+
     Scale1:draw1()
 
     d = 1
@@ -108,6 +136,23 @@ function game_craft:draw()
         love.graphics.draw(blocksMain, logo[d], a + 9, b + 9, 0, 2, 2)
         love.graphics.setColor(0,0,0,1)
         love.graphics.print(recipe[d], a + 100, b + 35, 0, 0.5, 0.5)
+        love.graphics.setColor(1,1,1,2/4)
+        if d == 1 then
+            if q1 then love.graphics.setColor(1,1,1,1) end
+            love.graphics.draw(blocksMain, blocks[1], a + 115, b + 36, 0, 3/4, 3/4)
+            love.graphics.setColor(1,1,1,2/4)
+        elseif d == 2 then
+            if q2 then love.graphics.setColor(1,1,1,1) end
+            love.graphics.draw(blocksMain, blocks[1], a + 115, b + 36, 0, 3/4, 3/4)
+            love.graphics.setColor(1,1,1,2/4)
+            if q3 then love.graphics.setColor(1,1,1,1) end
+            love.graphics.draw(blocksMain, blocks[2], a + 165, b + 36, 0, 3/4, 3/4)
+            love.graphics.setColor(1,1,1,2/4)
+        elseif d == 3 then
+            if q4 then love.graphics.setColor(1,1,1,1) end
+            love.graphics.draw(blocksMain, blocks[7], a + 115, b + 36, 0, 3/4, 3/4)
+            love.graphics.setColor(1,1,1,2/4)
+        end
         love.graphics.setColor(1,1,1,1)
         d = d + 1
     end

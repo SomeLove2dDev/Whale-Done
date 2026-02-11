@@ -75,6 +75,7 @@ function game_game:load()
     items = love.graphics.newImage("assets/items.png")
     Inventory = storage:new(InventoryUI, 9, 99, {screenWidth, screenHeight}, items, 5, 5)
     Inventory:add(3, 1)
+    Inventory:add(4, 10)
 end
 
 -- update function for game
@@ -99,6 +100,7 @@ function game_game:update(dt, save, past)
             elseif d == 2 then 
                 cQ2 = Inventory:getQuantity(5)
                 added = thing[2] - cQ2
+                
                 for i = 1, added do
                     if Inventory:getQuantity(5) < thing[2] and Inventory:getQuantity(1) >= 5 and Inventory:getQuantity(2) >= 4 then
                         Inventory:set(5, cQ2 + i)
@@ -106,8 +108,16 @@ function game_game:update(dt, save, past)
                         Inventory:remove(2, 4)
                     end
                 end
+            elseif d == 3 then
+                cQ3 = Inventory:getQuantity(1)
+                added = thing[2] - cQ3
+                for i = 1, added do
+                    if Inventory:getQuantity(1) < thing[2] and Inventory:getQuantity(7) >= 4 then
+                        Inventory:set(1, cQ3 + i)
+                        Inventory:remove(7, 4)
+                    end
+                end
             end
-            
         end
     end
     saved = true
@@ -173,6 +183,22 @@ function game_game:update(dt, save, past)
                     if d == 24 then 
                         Map:setItem(player.sx + player.hover.offX, player.sy + player.hover.offY, 2)
                     end
+                    if d == 4 then
+                        i = love.math.random(10)
+                        if i < 2 then 
+                            Map:setItem(player.sx + player.hover.offX, player.sy + player.hover.offY, 6)
+                        else
+                            Map:setItem(player.sx + player.hover.offX, player.sy + player.hover.offY, 7)
+                        end
+                    end
+                    if d == 34 then
+                        i = love.math.random(3)
+                        if i <= 2 then 
+                            Map:setItem(player.sx + player.hover.offX, player.sy + player.hover.offY, 6)
+                        else
+                            Map:setItem(player.sx + player.hover.offX, player.sy + player.hover.offY, 7)
+                        end
+                    end
                 end
                 atime = 0
                 if not mine then
@@ -237,13 +263,23 @@ function game_game:update(dt, save, past)
     if Map:getEntity(player.sx, player.sy) > 50 then 
         d = Map:getEntity(player.sx, player.sy)
         if d == 51 then
-            i = love.math.random(2, 4)
+            i = love.math.random(3)
             Inventory:add(1, i)
             Map:setEntity(player.sx , player.sy, 0)
         end
         if d == 52 then 
-            i = love.math.random(3)
+            i = love.math.random(2)
             Inventory:add(2, i)
+            Map:setEntity(player.sx , player.sy, 0)
+        end
+        if d == 56 then
+            i = love.math.random(2)
+            Inventory:add(6, i)
+            Map:setEntity(player.sx , player.sy, 0)
+        end
+        if d == 57 then
+            i = love.math.random(2, 4)
+            Inventory:add(7, i)
             Map:setEntity(player.sx , player.sy, 0)
         end
     end
@@ -267,6 +303,10 @@ function game_game:draw()
     Inventory:draw(player.direction, player.rotate)
     
     Scale:draw2()
+end
+
+function game_game:switch()
+    return Inventory:getAll()
 end
 
 return game_game

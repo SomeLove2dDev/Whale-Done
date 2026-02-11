@@ -80,7 +80,7 @@ function map:draw()
                 if b and type(b) == "number" and b > 0 and dx + 48 > 0 and dx < 768 and dy + 48 > 0 and dy < 432 then
                     if b < 50 then 
                         love.graphics.draw(self.image, self.tiles[b], dx, dy, 0, 3, 3)
-                    elseif d == 1 or d == 2 or d == 3 then
+                    elseif d == 1 or d == 2 or d == 3 or d == 6 or d == 7 then
                         love.graphics.draw(self.items, self.itiles[d], 12 + dx, 12 + dy, 0, 1.5, 1.5)
                     elseif d == 4 or d == 5 then
                         love.graphics.draw(self.items, self.itiles[d], dx, dy, 0, 3, 3)

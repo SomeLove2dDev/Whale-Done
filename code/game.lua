@@ -40,7 +40,7 @@ function game:update(dt)
             state[1] = "game"
         end
     elseif state[2] == "craft" and switch then
-        state[2] = craft:update(dt)
+        state[2] = craft:update(dt, save)
         if state[2] == "game" then
             switch = false
             time = 0
@@ -57,6 +57,8 @@ function game:update(dt)
         pTime = 0
         if state[2] == "game" then
             save = craft:switch()
+        elseif state[2] == "craft" then
+            save = play:switch()
         end
     end
 end

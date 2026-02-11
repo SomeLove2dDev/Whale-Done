@@ -118,17 +118,20 @@ function storage:update()
     end
 end
 
+function storage:getAll()
+    return self.items
+end
+
 -- draw storage class
 function storage:draw(direction, rotate)
     u = self.holding
     i = self.items[u].item
     if i then
         if direction > 0 then
-            love.graphics.draw(self.itemsImage, self.itemQuads[i], self.screenData[1] / 2 + 18, self.screenData[2] / 2 + 33, math.rad(rotate), 1.5, 1.5, 8, 8)
+            love.graphics.draw(self.itemsImage, self.itemQuads[i], self.screenData[1] / 2 + 28, self.screenData[2] / 2 + 33, math.rad(rotate), 1.5, 1.5, 8, 8)
         else
             love.graphics.draw(self.itemsImage, self.itemQuads[i], self.screenData[1] / 2 - 2, self.screenData[2] / 2 + 33, math.rad(-rotate), -1.5, 1.5, 8, 8)
         end
-        
     end
 
     for d = 1, self.slots do
@@ -145,7 +148,7 @@ function storage:draw(direction, rotate)
             if k < 10 then
                 love.graphics.print(tostring(k), 107 + ((d - 1) * 72), self.screenData[2] - 45)
             else
-                love.graphics.print(tostring(k), 100 + ((d - 1) * 72), self.screenData[2] - 45)
+                love.graphics.print(tostring(k), 97 + ((d - 1) * 72), self.screenData[2] - 45)
             end
             love.graphics.setColor(1,1,1,1)
             
