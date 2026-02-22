@@ -60,7 +60,7 @@ function game_craft:load()
     end
     logo = {
         blocks[4],
-        blocks[5],
+        blocks[14],
         blocks[1]
     }
 end
