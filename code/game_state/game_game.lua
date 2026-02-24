@@ -35,8 +35,8 @@ player = {
         inside = nil
     },
     scale = 3,
-    x = 1, 
-    y = 1,
+    x = 135, 
+    y = 90,
     sx = 10,
     sy = 7,
     mx = 0,
@@ -75,7 +75,7 @@ function game_game:load()
     items = love.graphics.newImage("assets/sprites/items.png")
     Inventory = storage:new(InventoryUI, 9, 99, {screenWidth, screenHeight}, items, 5, 5)
     Inventory:add(3, 1)
-    Inventory:add(4, 10)
+    Inventory:add(6, 5)
 end
 
 -- update function for game
