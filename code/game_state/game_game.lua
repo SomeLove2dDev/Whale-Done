@@ -28,6 +28,7 @@ Entities = mapdata.layers[2].data
 
 player = {
     image = nil,
+    quads = {},
     hover = {
         image = nil,
         offX = 1,
@@ -42,7 +43,8 @@ player = {
     mx = 0,
     my = 0,
     direction = 1,
-    rotate = 0
+    rotate = 0,
+    health = 20,
 }
 
 function game_game:new()
@@ -58,6 +60,8 @@ function game_game:load()
     love.graphics.setFont(myFont)
     player.image = love.graphics.newImage("assets/sprites/player.png")
     player.hover.image = love.graphics.newImage("assets/sprites/hover.png")
+    table.insert(player.quads, love.graphics.newQuad(0, 0, 16, 16, player.image))
+    table.insert(player.quads, love.graphics.newQuad(16, 0, 16, 16, player.image))
     Map = map:new(
         {Tiles, Entities},
         300,
@@ -74,6 +78,11 @@ function game_game:load()
     InventoryUI = love.graphics.newImage("assets/sprites/inventory-ui.png")
     items = love.graphics.newImage("assets/sprites/items.png")
     Inventory = storage:new(InventoryUI, 9, 99, {screenWidth, screenHeight}, items, 5, 5)
+    health = love.graphics.newImage("assets/sprites/health.png")
+    healthQuads = {}
+    for i=1, 5 do 
+        table.insert(healthQuads, love.graphics.newQuad((i-1)*16, 0, 16, 16, health))
+    end
     Inventory:add(3, 1)
     Inventory:add(6, 5)
 end
@@ -119,6 +128,7 @@ function game_game:update(dt, save, past)
                 end
             end
         end
+        player.health = player.health - 1
     end
     saved = true
     player.sx = player.x + 9
@@ -306,8 +316,28 @@ function game_game:draw()
     love.graphics.setColor(1, 1, 1, 1)
     Map:draw()
     love.graphics.draw(player.hover.image, screenWidth / 2 - 24 + (player.hover.offX * 48), screenHeight / 2 + (player.hover.offY * 48), 0, player.scale, player.scale)
-    love.graphics.draw(player.image, screenWidth / 2, screenHeight / 2 + 24, 0, player.scale * player.direction, player.scale, 8, 8)
+    if player.direction > 0 then
+        love.graphics.draw(player.image, player.quads[1], screenWidth / 2, screenHeight / 2 + 24, 0, player.scale, player.scale, 8, 8)
+    else
+        love.graphics.draw(player.image, player.quads[2], screenWidth / 2, screenHeight / 2 + 24, 0, player.scale, player.scale, 8, 8)
+    end
     Inventory:draw(player.direction, player.rotate)
+    for i=1, 5 do
+        a = nil
+        j = (player.health + 4)- (i * 4)
+        if j >= 4 then
+            a = 1
+        elseif j == 3 then
+            a = 2
+        elseif j == 2 then
+            a = 3
+        elseif j == 1 then
+            a = 4
+        else
+            a = 5
+        end
+        love.graphics.draw(health, healthQuads[a], 60 + (i-1) * 56, 300, 0, 3, 3)
+    end
     
     Scale:draw2()
 end
