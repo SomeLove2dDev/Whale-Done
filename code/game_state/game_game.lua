@@ -128,7 +128,6 @@ function game_game:update(dt, save, past)
                 end
             end
         end
-        player.health = player.health - 1
     end
     saved = true
     player.sx = player.x + 9
