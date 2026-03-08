@@ -68,6 +68,7 @@ function game_game:load()
         200,
         love.graphics.newImage("assets/sprites/tileset.png"),
         love.graphics.newImage("assets/sprites/items.png"),
+        love.graphics.newImage("assets/sprites/highlight.png"), 
         10,
         5,
         5,

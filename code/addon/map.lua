@@ -5,16 +5,18 @@
 map = {}
 map.__index = map
 
--- layers order: Tiles, Entities, width and height is of the layers, image is the refernce tilemap, items is the reference items map, iwidth1, iwidth2, iheight1, iheight2, is the width and height of the reference images (image (1), items(2)), offX, offY is the offset of the map (based on tiles) --
-function map:new(layers, width, height, image, items, iWidth1, iHeight1, iWidth2, iHeight2, offX, offY)
+-- layers order: Tiles, Entities, width and height is of the layers, image is the refernce tilemap, items is the reference items map, highlight is the highlight of the items, iwidth1, iwidth2, iheight1, iheight2, is the width and height of the reference images (image (1), items(2)), offX, offY is the offset of the map (based on tiles) --
+function map:new(layers, width, height, image, items, highlight, iWidth1, iHeight1, iWidth2, iHeight2, offX, offY)
     self = setmetatable({}, map)
     self.layers = layers or {}
     self.width = width or 0
     self.height = height or 0
     self.image = image
     self.items = items
+    self.highlight = highlight
     self.tiles = {}
     self.itiles = {}
+    self.htiles = {}
     self.iWidth1 = iWidth1
     self.iHeight1 = iHeight1
     self.iWidth2 = iWidth2
@@ -29,6 +31,11 @@ function map:new(layers, width, height, image, items, iWidth1, iHeight1, iWidth2
     for j=1, self.iHeight2 do
         for i=1, self.iWidth2 do
             table.insert(self.itiles, love.graphics.newQuad((i-1) * 16, (j-1) * 16, 16, 16, self.items))
+        end
+    end
+    for j=1, self.iHeight2 do
+        for i=1, self.iWidth2 do
+            table.insert(self.htiles, love.graphics.newQuad((i-1) * 18, (j-1) * 18, 18, 18, self.highlight))
         end
     end
     return self
@@ -81,6 +88,7 @@ function map:draw()
                     if b < 50 then 
                         love.graphics.draw(self.image, self.tiles[b], dx, dy, 0, 3, 3)
                     elseif d > 0 and d < 14 and d ~= 4 then
+                        love.graphics.draw(self.highlight, self.htiles[d], 10.5 + dx, 10.5 + dy, 0, 1.5, 1.5)
                         love.graphics.draw(self.items, self.itiles[d], 12 + dx, 12 + dy, 0, 1.5, 1.5)
                     elseif d > 13 or d == 4 then
                         love.graphics.draw(self.items, self.itiles[d], dx, dy, 0, 3, 3)
